@@ -1,32 +1,27 @@
 ## This is skeleton
 
-library(scran)
-library(scater)
 library(DropletUtils)
-
+library(org.Hs.eg.db)
 library(BiocFileCache)
-bfc <- BiocFileCache(ask=FALSE)    
+bfc <- BiocFileCache(ask=FALSE)
 set.seed(1000)
 
 #########################
 
-path.68 <- bfcrpath(bfc, "http://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz")
-tmp.68 <- tempfile()
-untar(path.68, exdir=tmp.68)
-sce.68 <- read10xCounts(file.path(tmp.68, "filtered_matrices_mex/hg19/")) 
+create_sce <- function(url, genome_build) {
+    path <- bfcrpath(bfc, url)
+    tmp <- tempfile()
+    untar(path, exdir=tmp)
+    sce <- read10xCounts(file.path(tmp, "filtered_matrices_mex",
+                                   genome_build))
+    symb <- mapIds(org.Hs.eg.db, keys=rownames(sce),
+                   keytype="ENSEMBL", column="SYMBOL")
+    colnames(rowData(sce)) <- c("ENSEMBL", "Symbol_TENx")
+    rowData(sce)$Symbol <- symb
+    return(sce)
+}
 
-library(org.Hs.eg.db)
-symb <- mapIds(org.Hs.eg.db, keys=rownames(sce.68), keytype="ENSEMBL", column="SYMBOL")
-rowData(sce.68)$Symbol <- symb
+url <- "http://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz"
+genome_build <- "hg19"
 
-
-# Pre-processing the 4K T-cell dataset.
-bfc <- BiocFileCache(ask=FALSE)    
-path.4 <- bfcrpath(bfc, "http://cf.10xgenomics.com/samples/cell-exp/2.1.0/t_4k/t_4k_filtered_gene_bc_matrices.tar.gz")
-tmp.4 <- tempfile()
-untar(path.4, exdir=tmp.4)
-sce.4 <- read10xCounts(file.path(tmp.4, "filtered_gene_bc_matrices/GRCh38/"))
-
-symb <- mapIds(org.Hs.eg.db, keys=rownames(sce.4), keytype="ENSEMBL", column="SYMBOL")
-rowData(sce.4)$Symbol <- symb
-
+create_sce(url, genome_build)
