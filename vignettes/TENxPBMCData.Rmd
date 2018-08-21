@@ -1,0 +1,38 @@
+---
+title: "Exploring the PBMC scRNA-seq data from 10X Genomics"
+author:
+- name: Kasper D. Hansen
+  affiliation: Johns Hopkins University
+- name: Stephanie Hicks
+  affiliation: Johns Hopkins University
+- name: Davide Risso
+  affiliation: XX
+output:
+  BiocStyle::html_document:
+    toc_float: true
+package: TENxPBMCData
+vignette: |
+  %\VignetteIndexEntry{Exploring the PBMC scRNA-seq data from 10X Genomics}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, echo=FALSE, results="hide", message=FALSE}
+require(knitr)
+opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r style, echo=FALSE, results='asis'}
+BiocStyle::markdown()
+```
+
+# BLAH
+
+BLAH
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+[tenx_68k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/fresh_68k_pbmc_donor_a
