@@ -1,12 +1,12 @@
 ---
-title: "Exploring the PBMC scRNA-seq data from 10X Genomics"
+title: "Exploring the Peripheral Blood Mononuclear Cell (PBMC) scRNA-seq data from 10X Genomics"
 author:
 - name: Kasper D. Hansen
   affiliation: Johns Hopkins University
-- name: Stephanie Hicks
+- name: Stephanie C. Hicks
   affiliation: Johns Hopkins University
 - name: Davide Risso
-  affiliation: XX
+  affiliation: Weill Cornell Medicine
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -25,9 +25,109 @@ opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
 BiocStyle::markdown()
 ```
 
-# BLAH
+# Exploring the Peripheral Blood Mononuclear Cell (PBMC) scRNA-seq data from 10X Genomics
 
-BLAH
+Package: `r Biocpkg("TENxPBMCData")` <br />
+Author: Kasper Hansen, Stephanie Hicks, Davide Risso <br />
+Modification date: 23 August, 2018 <br />
+Compilation date: `r Sys.Date()`
+
+The `r Biocpkg("TENxPBMCData")` package provides a _R_ /
+_Bioconductor_ resource for representing and manipulating the 
+nine different single-cell RNA-seq (scRNA-seq) data sets generated
+by [10X Genomics][tenx]: 
+
+1. [pbmc68k][pbmc68k]
+2. [frozen_pbmc_donor_a][frozen_pbmc_donor_a]
+3. [frozen_pbmc_donor_b][frozen_pbmc_donor_b]
+4. [frozen_pbmc_donor_c][frozen_pbmc_donor_c]
+5. [pbmc33k][pbmc33k]
+6. [pbmc3k][pbmc3k]
+7. [pbmc6k][pbmc6k]
+8. [pbmc4k][pbmc4k]
+9. [pbmc8k][pbmc8k]
+
+This package makes extensive use of the `r Biocpkg("HDF5Array")` package 
+to avoid loading the entire data set in memory, instead storing 
+the counts on disk as a HDF5 file and loading subsets of the 
+data into memory upon request.
+
+# Initial work flow
+
+## Loading the data
+
+There are 
+
+We use the `TENxPBMCData` function to download the relevant files
+from _Bioconductor_'s ExperimentHub web resource. This includes the
+HDF5 file containing the counts, as well as the metadata on the rows
+(genes) and columns (cells). The output is a single
+`SingleCellExperiment` object from the `r Biocpkg("SingleCellExperiment")` 
+package. This is equivalent to a `SummarizedExperiment` class but
+with a number of features specific to single-cell data.
+
+```{r}
+library(TENxPBMCData)
+tenx_pbmc4k <- TENxPBMCData(sample_name = c("pbmc4k"))
+tenx_pbmc4k
+```
+
+The first call to `TENxPBMCData()` may take some time due to the
+need to download some moderately large files. The files are then
+stored locally such that ensuing calls in the same or new sessions are
+fast.
+
+The count matrix itself is represented as a `DelayedMatrix` from the
+`r Biocpkg("DelayedArray")` package. This wraps the underlying HDF5
+file in a container that can be manipulated in R. Each count
+represents the number of unique molecular identifiers (UMIs) assigned
+to a particular gene in a particular cell.
+
+```{r}
+counts(tenx_pbmc4k)
+```
+
+## Exploring the data
+
+To quickly explore the data set, we compute some summary statistics on
+the count matrix. We tell the `r Biocpkg("DelayedArray")` block
+size to indicate that we can use up to 1 GB of memory for loading the
+data into memory from disk.
+
+```{r}
+options(DelayedArray.block.size=1e9)
+```
+
+We are interested in library sizes `colSums(counts(tenx_pbmc4k))`, number of
+genes expressed per cell `colSums(counts(tenx_pbmc4k) != 0)`, and average
+expression across cells `rowMeans(counts(tenx_pbmc4k))`. A naive implement
+might be
+
+```{r, eval = FALSE}
+lib.sizes <- colSums(counts(tenx_pbmc4k))
+n.exprs <- colSums(counts(tenx_pbmc4k) != 0L)
+ave.exprs <- rowMeans(counts(tenx_pbmc4k))
+```
+
+More advanced analysis procedures are implemented in various
+_Bioconductor_ packages - see the `SingleCell` biocViews for more
+details.
+
+## Saving computations
+
+Saving the `tenx_pbmc4k` object in a standard manner, e.g.,
+
+```{r, eval=FALSE}
+destination <- tempfile()
+saveRDS(tenx_pbmc4k, file = destination)
+```
+
+saves the row-, column-, and meta-data as an _R_ object, and remembers
+the location and subset of the HDF5 file from which the object is
+derived. The object can be read into a new _R_ session with
+`readRDS(destination)`, provided the HDF5 file remains in it's
+original location.
+
 
 # Session information
 
@@ -35,4 +135,15 @@ BLAH
 sessionInfo()
 ```
 
-[tenx_68k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/fresh_68k_pbmc_donor_a
+[tenx]: https://support.10xgenomics.com/single-cell-gene-expression/datasets
+[pbmc68k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/fresh_68k_pbmc_donor_a
+[frozen_pbmc_donor_a]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/frozen_pbmc_donor_a
+[frozen_pbmc_donor_b]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/frozen_pbmc_donor_b
+[frozen_pbmc_donor_c]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/frozen_pbmc_donor_c
+[pbmc33k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/pbmc33k
+[pbmc3k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/pbmc3k
+[pbmc6k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/pbmc6k
+[pbmc4k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/2.1.0/pbmc4k
+[pbmc8k]: https://support.10xgenomics.com/single-cell-gene-expression/datasets/2.1.0/pbmc8k
+
+
