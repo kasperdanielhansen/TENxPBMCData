@@ -76,6 +76,7 @@ main.data <- data.frame(
   Maintainer="Kasper D. Hansen <kasperdanielhansen@gmail.com>",
   RDataClass="character",
   DispatchClass=rep(c("H5File", "Rds", "Rds"), 9),
+  Chemistry=c(rep("Gemcode", 12), rep("Chromium_v1", 9), rep("Chromium_v2", 6)),
   stringsAsFactors = FALSE
 )
 
