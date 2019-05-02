@@ -1,6 +1,6 @@
 Package: TENxPBMCData
 Title: PBMC data from 10X Genomics
-Version: 1.2.0
+Version: 1.3.0
 Authors@R: c(
     person(c("Kasper", "D."), "Hansen", role = "aut"),
     person("Davide", "Risso", role = "aut"),
