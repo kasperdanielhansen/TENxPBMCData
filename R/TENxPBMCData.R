@@ -1,5 +1,4 @@
-TENxPBMCData <- function(dataset = c("pbmc4k", "pbmc4k",
-                                     "pbmc68k", "frozen_pbmc_donor_a",
+TENxPBMCData <- function(dataset = c("pbmc68k", "frozen_pbmc_donor_a",
                                      "frozen_pbmc_donor_b", "frozen_pbmc_donor_c",
                                      "pbmc33k", "pbmc3k", "pbmc6k", "pbmc4k",
                                      "pbmc8k"))
