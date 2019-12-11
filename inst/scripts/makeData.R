@@ -209,3 +209,21 @@ coldata <- c(tissue_type = "Frozen",
              published_date = "2016-07-24")
 sce <- create_sce(url, version, genome_build, sample_name, coldata)
 save_sce(sce, "frozen_pbmc_donor_c")
+
+# pbmc5k-CITEseq
+url <- "http://cf.10xgenomics.com/samples/cell-exp/3.0.2/5k_pbmc_protein_v3/5k_pbmc_protein_v3_filtered_feature_bc_matrix.tar.gz"
+genome_build <- "GRCh38"
+version <- 3
+sample_name <- "pbmc5k-CITEseq"
+coldata <- c(tissue_type = NA,
+             version = "v3.0.2",
+             chemistry = "Chromium_v3",
+             barcode_type = "Chromium",
+             sequencer = "NovaSeq",
+             donor = "HealthyDonor",
+             published_date = "2019-05-29")
+sce <- create_sce(url, version, genome_build, sample_name, coldata)
+colnames(rowData(sce))[3] <- "Type"
+feat.type <- rowData(sce)$Type
+alt_sce <- splitAltExps(sce, feat.type)
+save_sce(sce, "pbmc5k-CITEseq")
