@@ -19,6 +19,9 @@ create_sce <- function(url, version = c(1, 2),
         subdir <- "filtered_matrices_mex"
     } else if(version == 2) {
         subdir <- "filtered_gene_bc_matrices"
+    } else if(version == 3) {
+      subdir <- "filtered_feature_bc_matrix"
+      genome_build <- ""
     }
     sce <- read10xCounts(file.path(tmp, subdir, genome_build))
     symb <- mapIds(org.Hs.eg.db, keys=rownames(sce),
