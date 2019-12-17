@@ -1,7 +1,7 @@
 TENxPBMCData <- function(dataset = c("pbmc68k", "frozen_pbmc_donor_a",
                                      "frozen_pbmc_donor_b", "frozen_pbmc_donor_c",
                                      "pbmc33k", "pbmc3k", "pbmc6k", "pbmc4k",
-                                     "pbmc8k"))
+                                     "pbmc8k", "pbmc5k-CITEseq"))
 {
     ## Download HDF5 (dense assay) and RDS (row and column
     ## annotations) files from ExperimentHub, compose into a
@@ -25,7 +25,14 @@ TENxPBMCData <- function(dataset = c("pbmc68k", "frozen_pbmc_donor_a",
     })
     h5array <- HDF5Array(h5file, "counts")
     
-    SingleCellExperiment(
+    sce <- SingleCellExperiment(
       list(counts = h5array), rowData = rowData, colData = colData
     )
+    
+    # if multiple Types present in rowData, make altExp for SCE
+    if (length(unique(rowData(sce)$Type)) > 1) {
+      sce <- splitAltExps(sce, rowData(sce)$Type)
+    }
+    
+    return(sce)
 }

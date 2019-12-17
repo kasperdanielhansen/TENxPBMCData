@@ -224,6 +224,4 @@ coldata <- c(tissue_type = NA,
              published_date = "2019-05-29")
 sce <- create_sce(url, version, genome_build, sample_name, coldata)
 colnames(rowData(sce))[3] <- "Type"
-feat.type <- rowData(sce)$Type
-sce <- splitAltExps(sce, feat.type)
 save_sce(sce, "pbmc5k-CITEseq")
