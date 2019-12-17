@@ -71,7 +71,7 @@ save_sce <- function(sce, sample_name) {
     counts(sce),
     filepath=paste0(sample_name, "_rectangular.h5"),
     name="counts",
-    chunkdim=beachmat::getBestChunkDims(dim(sce))
+    HDF5Array::getHDF5DumpChunkDim(dim(sce))
   )
 }
 
@@ -225,5 +225,5 @@ coldata <- c(tissue_type = NA,
 sce <- create_sce(url, version, genome_build, sample_name, coldata)
 colnames(rowData(sce))[3] <- "Type"
 feat.type <- rowData(sce)$Type
-alt_sce <- splitAltExps(sce, feat.type)
+sce <- splitAltExps(sce, feat.type)
 save_sce(sce, "pbmc5k-CITEseq")
