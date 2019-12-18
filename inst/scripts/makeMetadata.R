@@ -60,7 +60,7 @@ main.data <- data.frame(
       "frozen_pbmc_donor_c", "pbmc33k", "pbmc3k", "pbmc6k", "pbmc4k", "pbmc8k", "pbmc5k-CITEseq")),
     c("_rectangular.h5", "_colData.rds", "_rowData.rds"), FUN = paste0))),
   BiocVersion="3.8",
-  Genome=c(rep("hg19", 21), rep("GRCh38", 6)),
+  Genome=c(rep("hg19", 21), rep("GRCh38", 9)),
   SourceType="tar (of mtx and tsv)",
   SourceUrl=rep(paste0("http://cf.10xgenomics.com/samples/cell-exp/",
                    c("1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz",
@@ -91,8 +91,8 @@ main.data <- data.frame(
   DataProvider="10X Genomics",
   Maintainer="Kasper D. Hansen <kasperdanielhansen@gmail.com>",
   RDataClass="character",
-  DispatchClass=rep(c("H5File", "Rds", "Rds"), 9),
-  Chemistry=c(rep("Gemcode", 12), rep("Chromium_v1", 9), rep("Chromium_v2", 6)),
+  DispatchClass=rep(c("H5File", "Rds", "Rds"), 10),
+  Chemistry=c(rep("Gemcode", 12), rep("Chromium_v1", 9), rep("Chromium_v2", 6), rep("Chromium_v3", 3)),
   stringsAsFactors = FALSE
 )
 
