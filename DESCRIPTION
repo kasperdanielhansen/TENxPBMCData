@@ -11,5 +11,6 @@ Depends: SingleCellExperiment, HDF5Array
 Imports: AnnotationHub, ExperimentHub
 Suggests: knitr, BiocStyle, snow, BiocFileCache, BiocParallel
 VignetteBuilder: knitr
-biocViews: SequencingData, RNASeqData, ExpressionData, SingleCellData
+biocViews: SequencingData, RNASeqData, ExpressionData, ExperimentHub,
+    ExperimentData, SingleCellData
 NeedsCompilation: no
