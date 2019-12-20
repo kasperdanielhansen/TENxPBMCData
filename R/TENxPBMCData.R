@@ -1,6 +1,6 @@
-TENxPBMCData <- function(dataset = c("pbmc68k", "frozen_pbmc_donor_a",
+TENxPBMCData <- function(dataset = c("pbmc4k", "pbmc68k", "frozen_pbmc_donor_a",
                                      "frozen_pbmc_donor_b", "frozen_pbmc_donor_c",
-                                     "pbmc33k", "pbmc3k", "pbmc6k", "pbmc4k",
+                                     "pbmc33k", "pbmc3k", "pbmc6k",
                                      "pbmc8k", "pbmc5k-CITEseq"))
 {
     ## Download HDF5 (dense assay) and RDS (row and column
