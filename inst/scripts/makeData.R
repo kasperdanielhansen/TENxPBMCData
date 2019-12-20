@@ -19,6 +19,9 @@ create_sce <- function(url, version = c(1, 2),
         subdir <- "filtered_matrices_mex"
     } else if(version == 2) {
         subdir <- "filtered_gene_bc_matrices"
+    } else if(version == 3) {
+      subdir <- "filtered_feature_bc_matrix"
+      genome_build <- ""
     }
     sce <- read10xCounts(file.path(tmp, subdir, genome_build))
     symb <- mapIds(org.Hs.eg.db, keys=rownames(sce),
@@ -68,7 +71,7 @@ save_sce <- function(sce, sample_name) {
     counts(sce),
     filepath=paste0(sample_name, "_rectangular.h5"),
     name="counts",
-    chunkdim=beachmat::getBestChunkDims(dim(sce))
+    HDF5Array::getHDF5DumpChunkDim(dim(sce))
   )
 }
 
@@ -206,3 +209,19 @@ coldata <- c(tissue_type = "Frozen",
              published_date = "2016-07-24")
 sce <- create_sce(url, version, genome_build, sample_name, coldata)
 save_sce(sce, "frozen_pbmc_donor_c")
+
+# pbmc5k-CITEseq
+url <- "http://cf.10xgenomics.com/samples/cell-exp/3.0.2/5k_pbmc_protein_v3/5k_pbmc_protein_v3_filtered_feature_bc_matrix.tar.gz"
+genome_build <- "GRCh38"
+version <- 3
+sample_name <- "pbmc5k-CITEseq"
+coldata <- c(tissue_type = NA,
+             version = "v3.0.2",
+             chemistry = "Chromium_v3",
+             barcode_type = "Chromium",
+             sequencer = "NovaSeq",
+             donor = "HealthyDonor",
+             published_date = "2019-05-29")
+sce <- create_sce(url, version, genome_build, sample_name, coldata)
+colnames(rowData(sce))[3] <- "Type"
+save_sce(sce, "pbmc5k-CITEseq")
