@@ -61,7 +61,7 @@ main.data <- data.frame(
     c("_rectangular.h5", "_colData.rds", "_rowData.rds"), FUN = paste0))),
   BiocVersion="3.8",
   Genome=c(rep("hg19", 21), rep("GRCh38", 9)),
-  SourceType="tar (of mtx and tsv)",
+  SourceType="tar.gz",
   SourceUrl=rep(paste0("http://cf.10xgenomics.com/samples/cell-exp/",
                    c("1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz",
                    "1.1.0/frozen_pbmc_donor_a/frozen_pbmc_donor_a_filtered_gene_bc_matrices.tar.gz",
@@ -96,5 +96,4 @@ main.data <- data.frame(
   stringsAsFactors = FALSE
 )
 
-write.csv(file="metadata.csv", main.data, row.names=FALSE)
-
+write.csv(file="../extdata/metadata.csv", main.data, row.names=FALSE)
