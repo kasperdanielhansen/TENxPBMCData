@@ -41,7 +41,7 @@ _Bioconductor_ resource for representing and manipulating nine different single-
 7. [pbmc6k][pbmc6k]
 8. [pbmc4k][pbmc4k]
 9. [pbmc8k][pbmc8k]
-10.[pbmc5k-CITEseq][pbmc5k-CITEseq]
+10. [pbmc5k-CITEseq][pbmc5k-CITEseq]
 
 The number in the `dataset` title is roughly the number of cells in the experiment.
 
