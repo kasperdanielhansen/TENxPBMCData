@@ -9,12 +9,17 @@
 TENxPBMCData(dataset = c("pbmc4k", "pbmc68k",
                          "frozen_pbmc_donor_a", "frozen_pbmc_donor_b",
                          "frozen_pbmc_donor_c", "pbmc33k", "pbmc3k",
-                         "pbmc6k", "pbmc8k", "pbmc5k-CITEseq"))
+                         "pbmc6k", "pbmc8k", "pbmc5k-CITEseq"),
+             as.sparse = TRUE)
 
 }
 
 \arguments{
   \item{dataset}{Which PBMC dataset from 10X Genomics should be retrieved?}
+  \item{as.sparse}{Logical, specifies whether the underlying HDF5 dataset should
+    be treated as sparse or not - will be passed to the call to 
+    \code{HDF5Array()}.
+    Defaults to TRUE, i.e. by using the \code{DelayedArray} infrastructure.}
 }
 \value{
 A SingleCellExperiment object with a HDF5Matrix in the \code{counts}

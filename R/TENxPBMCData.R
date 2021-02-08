@@ -1,7 +1,8 @@
 TENxPBMCData <- function(dataset = c("pbmc4k", "pbmc68k", "frozen_pbmc_donor_a",
                                      "frozen_pbmc_donor_b", "frozen_pbmc_donor_c",
                                      "pbmc33k", "pbmc3k", "pbmc6k",
-                                     "pbmc8k", "pbmc5k-CITEseq"))
+                                     "pbmc8k", "pbmc5k-CITEseq"),
+                         as.sparse = TRUE)
 {
     ## Download HDF5 (dense assay) and RDS (row and column
     ## annotations) files from ExperimentHub, compose into a
@@ -23,7 +24,7 @@ TENxPBMCData <- function(dataset = c("pbmc4k", "pbmc68k", "frozen_pbmc_donor_a",
       rdatapath <- paste0(base, dataset, "_rectangular.h5")
       h5file <- query(hub, rdatapath)[[1]]
     })
-    h5array <- HDF5Array(h5file, "counts")
+    h5array <- HDF5Array(h5file, "counts", as.sparse = as.sparse)
     
     sce <- SingleCellExperiment(
       list(counts = h5array), rowData = rowData, colData = colData
