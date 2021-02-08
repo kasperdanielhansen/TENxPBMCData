@@ -32,10 +32,11 @@ TENxPBMCData <- function(dataset = c("pbmc4k", "pbmc68k", "frozen_pbmc_donor_a",
     # if multiple Types present in rowData, make altExp for SCE
     if (length(unique(rowData(sce)$Type)) > 1) {
       sce <- splitAltExps(sce, rowData(sce)$Type)
+      
+      # modify rowData of altExp for CITE-seq data
+      rowData(altExp(sce))$ENSEMBL_ID <- NULL
+      rowData(altExp(sce))$Symbol <- rownames(rowData(altExp(sce)))
     }
-    # modify rowData of altExp for CITE-seq data
-    rowData(altExp(sce))$ENSEMBL_ID <- NULL
-    rowData(altExp(sce))$Symbol <- rownames(rowData(altExp(sce)))
     
     return(sce)
 }
